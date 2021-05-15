@@ -8,7 +8,7 @@ const ImageLinkForm = () => {
                 {'Detect the face from the picture. Give it a try'}
             </p>
             <div className="flex">
-                <div className="form center pa4 br3 shadow-5">
+                <div className="form relative z10 center pa4 br3 shadow-5">
                     <input className="f4 pa2 w-70 center" type="text" />
                     <button className="w-30 grow f4 link ba ph3 pv2 dib black-60 bg-washed-red center"> Detect</button>
                 </div>
