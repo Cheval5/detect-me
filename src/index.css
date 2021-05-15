@@ -4,6 +4,7 @@ body {
   font-family: sans-serif;
   background: linear-gradient(89deg, rgba(234, 0, 255, 0.418) 0%,  
 rgba(255, 145, 0, 0.336) 100%);
+font-family:'Courier New', Courier, monospace;
 }
 button{
   cursor: pointer;
