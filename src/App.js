@@ -3,6 +3,7 @@ import Navigation from './components/Navigation/Navigation'
 import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
@@ -25,28 +26,43 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      input: ''
+      input: '',
+      imageURL:'',
+      box: {}
     }
   }
 
+  calculateFaceDetection = (data) =>{
+    const ClarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: width * ClarifaiFace.left_col,
+      rightCol: width - (width * ClarifaiFace.right_col),
+      topRow: height * ClarifaiFace.top_row,
+      bottomRow: height - (height * ClarifaiFace.bottom_row)
+    }
+  }
+
+  displayFaceBox = (box) => {
+    console.log(box);
+    this.setState({box:box})
+  }
+ 
   onInputChange = (event) =>{
-    console.log(event.target.value);
+    this.setState({input:event.target.value});
   }
 
   onButtonSubmit = () =>{
-    console.log('click');
+    this.setState({imageURL:this.state.input})
     app.models
     .predict(
     Clarifai.FACE_DETECT_MODEL,
-    // THE JPG
-    "https://i.insider.com/5d321d4ea209d3146d650b4a?width=1100&format=jpeg&auto=webp"
+    this.state.input
     )
-    .then((response) => {
-    console.log(response);
-    })
-    .catch((err) => {
-    console.log(err);
-    });
+    .then((response) => this.displayFaceBox(this.calculateFaceDetection(response)))
+    .catch((err) => console.log(err));
   }
 
   render() {
@@ -63,7 +79,10 @@ class App extends Component {
           onInputChange ={this.onInputChange}
           onButtonSubmit ={this.onButtonSubmit}
         />
-        {/* <FaceRecognition /> */}
+        <FaceRecognition 
+          imageURL={this.state.imageURL}
+          box={this.state.box}
+        />
       </div>
     );
   }
