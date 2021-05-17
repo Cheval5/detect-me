@@ -6,6 +6,8 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
+import SignIn from './components/SignIn/SignIn';
+
 
 const app = new Clarifai.App({
   apiKey: 'c6c352d3c9bd4aeb917de8661fc9c894',
@@ -83,6 +85,7 @@ class App extends Component {
           imageURL={this.state.imageURL}
           box={this.state.box}
         />
+        <SignIn />
       </div>
     );
   }
