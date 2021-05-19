@@ -2,6 +2,40 @@ import React, { Component } from 'react';
 import './SignIn.css';
 
 class SignIn extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            signinEmail:'',
+            signinPassword: '',
+        }
+    }
+
+    onEmailChange = (event) => {
+        this.setState({signinEmail: event.target.value})
+    }
+
+    onPasswordChange = (event) => {
+        this.setState({signinPassword: event.target.value})
+    }
+
+    onSubmitSignin = () => {
+        const {signinEmail, signinPassword} = this.state
+        fetch("http://localhost:3000/signin", {
+            method: 'post',
+            headers: {'Content-Type': 'Application/json'},
+            body: JSON.stringify({
+                email: signinEmail,
+                password: signinPassword,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data === 'success'){
+                this.props.onRouteChange('home')
+            }
+        })
+    }
+
     render() {
         const { onRouteChange } = this.props;
         return (
@@ -16,6 +50,7 @@ class SignIn extends Component {
                                 type="email" 
                                 name="email-address"  
                                 id="email-address"
+                                onChange={this.onEmailChange}
                                 />
                             </div>
                             <div className="mv3">
@@ -23,14 +58,16 @@ class SignIn extends Component {
                                 <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 z13 relative" 
                                 type="password" 
                                 name="password"  
-                                id="password"/>
+                                id="password"
+                                onChange={this.onPasswordChange}
+                                />
                             </div>
                         </fieldset>
                             <div className="">
                                 <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib z13 relative" 
                                 type="submit" 
                                 value="Sign in"
-                                onClick={() => onRouteChange('home')}
+                                onClick={this.onSubmitSignin}
                                 />
                             </div>
                             <div className="lh-copy mt3">
