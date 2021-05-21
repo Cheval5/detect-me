@@ -12,6 +12,17 @@ class Register extends Component {
     }
 
     onRegisterClick = () => {
+        if (!this.state.newName || this.state.newName.length <= 0) {
+            return false;
+        }
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const testEmail = re.test(String(this.state.newEmail).toLowerCase());
+        if (!testEmail || testEmail.length <= 0) {
+            return false;
+        }
+        if (!this.state.newPassword || this.state.newPassword.length <= 0) {
+            return false;
+        }
         fetch("http://localhost:3000/register", {
             method: 'post',
             headers: {'Content-Type': 'Application/json'},
@@ -23,7 +34,8 @@ class Register extends Component {
         })
         .then( response => response.json())
         .then(user => {
-            if(user){
+            console.log(user);
+            if(user.id){
                 this.props.loadUser(user)
                 this.props.onRouteChange('home')
             }
