@@ -7,6 +7,7 @@ class SignIn extends Component {
         this.state = {
             signinEmail:'',
             signinPassword: '',
+            incorrectSignin: false,
         }
     }
 
@@ -33,6 +34,8 @@ class SignIn extends Component {
             if(user.id){
                 this.props.loadUser(user)
                 this.props.onRouteChange('home')
+            } else {
+                this.setState({incorrectSignin: true})
             }
         })
     }
@@ -76,6 +79,7 @@ class SignIn extends Component {
                                 onClick={() => onRouteChange('register')}
                                 className="f6 link dim black db pointer z13 relative">Register</p>
                             </div>
+                            {this.state.incorrectSignin ? <p className="db fw6 lh-copy f6">Incorrect Email or Password</p> : null}
                     </div>
                 </article>
             </div>
