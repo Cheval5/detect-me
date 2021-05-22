@@ -8,16 +8,19 @@ class Register extends Component {
             newName: '',
             newEmail: '',
             newPassword: '',
+            entry: 'correct'
         }
     }
 
     onRegisterClick = () => {
         if (!this.state.newName || this.state.newName.length <= 0) {
+            this.setState({ entry: 'nameIncorrect'})
             return false;
         }
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const testEmail = re.test(String(this.state.newEmail).toLowerCase());
         if (!testEmail || testEmail.length <= 0) {
+            this.setState({ entry: 'emailIncorrect'})
             return false;
         }
         if (!this.state.newPassword || this.state.newPassword.length <= 0) {
@@ -68,6 +71,7 @@ class Register extends Component {
                             name="name"  
                             id="name"
                             onChange = {this.onChangeName}
+                            Required
                             />
                         </div>
                         <div className="mt3">
@@ -77,6 +81,7 @@ class Register extends Component {
                             name="email-address"  
                             id="email-address"
                             onChange = {this.onChangeEmail}
+                            Required
                             />
                         </div>
                         <div className="mv3">
@@ -88,6 +93,7 @@ class Register extends Component {
                             onChange = {this.onChangePassword}
                             />
                         </div>
+                        {this.state.entry === 'emailIncorrect' || this.state.entry === 'nameIncorrect' ? <p>Please enter the correct credentials</p> : null}
                     </fieldset>
                         <div className="">
                             <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib z13 relative" 
